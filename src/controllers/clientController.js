@@ -70,7 +70,7 @@ eventEmitter.on('clientCreated', async ({ client, rol }) => {
     try {
         const randomPassword = Math.random().toString(36).slice(-8); // Genera una contraseña aleatoria de 8 caracteres
 
-        await axios.post('http://localhost:3004/users/newUser', {
+        await axios.post('http://esb-servicepf.railway.internal/users/newUser', {
             username: client.email,
             password: randomPassword,
             phone: client.phone,
