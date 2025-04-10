@@ -68,9 +68,10 @@ export const createClient = async (req, res) => {
 // Escuchar el evento para crear un usuario automáticamente
 eventEmitter.on('clientCreated', async ({ client, rol }) => {
     try {
-        const randomPassword = Math.random().toString(36).slice(-8); // Genera una contraseña aleatoria de 8 caracteres
+        const randomPassword = Math.random().toString(36).slice(-8); // Contraseña aleatoria de 8 caracteres
 
-        await axios.post('http://userspf.railway.internal/users/newUser', {
+        // Usa el dominio público del servicio 'users' en Railway
+        const response = await axios.post('https://userspf-production.up.railway.app/users/newUser', {
             username: client.email,
             password: randomPassword,
             phone: client.phone,
@@ -78,9 +79,8 @@ eventEmitter.on('clientCreated', async ({ client, rol }) => {
         });
 
         console.log(`Usuario creado automáticamente para el cliente ${client.name} ${client.lastName} con rol ${rol}`);
-
     } catch (error) {
-        console.error('Error al crear usuario automáticamente:', error);
+        console.error('Error al crear usuario automáticamente:', error.response ? error.response.data : error.message);
     }
 });
 
